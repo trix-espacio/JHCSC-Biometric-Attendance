@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration - JHCSC</title>
+  <link rel="stylesheet" href="stud.css">
+  <style>
+   * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: url("red.jpg") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.registration-container {
+  padding: 25px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 120px;
+  height: auto;
+  margin: 0 10px;
+  size: 30%
+}
+
+h2 {
+  text-align: center;
+  color: #1a2a6c;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+h3 {
+  text-align: center;
+  color: #084b02;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+  align-items: start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+}
+
+label {
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  height: 42px;
+}
+
+input:focus, select:focus {
+  border-color: #1a2a6c;
+  outline: none;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 3px;
+  min-height: 16px;
+}
+
+.fingerprint-group {
+  grid-column: span 2;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.fingerprint-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.fingerprint-container:hover {
+  transform: scale(1.05);
+}
+
+.fingerprint {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.fingerprint.scanned {
+  box-shadow: 0 0 18px rgba(46, 204, 113, 0.8);
+  border: 2px solid #2ecc71;
+}
+
+.scan-text {
+  display: block;
+  margin-top: 5px;
+  font-weight: 600;
+  color: #1a2a6c;
+  font-size: 15px;
+}
+
+.form-actions {
+  grid-column: span 2;
+  margin-top: 8px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #1a2a6c, #b21f1f);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #243b7a, #c52c2c);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.confirmation {
+  text-align: center;
+  padding: 18px;
+  background: rgba(46, 204, 113, 0.2);
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.confirmation h3 {
+  color: #2ecc71;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.confirmation p {
+  font-size: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+.success-animation {
+  animation: successPulse 2s infinite;
+}
+
+@keyframes successPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+  </style>
+  <script src="stud.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="registration-container" id="registrationSection">
+      <div class="logo">
+        <img src="jhcsc_logo-removebg-preview.png" alt="JHCSC Logo">
+         <img src="ssc logo.png" alt="Second Logo">
+      </div>
+      <h3>J.H CERILLES STATE COLLEGE SUPREME STUDENT COUNCIL BIOMETRIC ATTENDANCE</h3>
+      <h2>Student Registration</h2>
+
+      <form id="registrationForm" class="form-grid">
+        <div class="form-group">
+          <label for="studentId">Student ID *</label>
+          <input type="text" id="studentId" placeholder="Enter Student ID" required>
+          <span class="error-message" id="studentIdError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="fullName">Full Name *</label>
+          <input type="text" id="fullName" placeholder="Enter Full Name" required>
+          <span class="error-message" id="fullNameError"></span>
+        </div>
+
+        <div class="form-group">
+  <label for="email">Email Account *</label>
+  <input type="email" id="email" placeholder="example@email.com" required>
+  <span class="error-message" id="emailError"></span>
+</div>
+        
+        <div class="form-group">
+          <label for="program">Program *</label>
+          <select id="program" required>
+            <option value="">Select Program</option>
+            <option value="BSED">BSED</option>
+            <option value="BSIT">BS Information Technology</option>
+            <option value="BSCS">BS Computer Science</option>
+            <option value="BSTM">BS Tourism Management</option>
+            <option value="BSE">BSE</option>
+            <option value="BSHM">BSHM</option>
+            <option value="BSN">BSN</option>
+            <option value="BSBA">BS Business Administration</option>
+          </select>
+          <span class="error-message" id="programError"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="yearLevel">Year Level *</label>
+          <select id="yearLevel" required>
+            <option value="">Select Year Level</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+          <span class="error-message" id="yearLevelError"></span>
+        </div>
+
+        <div class="form-group fingerprint-group">
+          <label>Scan Fingerprint *</label>
+          <div class="fingerprint-container" id="fingerprintContainer">
+            <img src="../biometric.jpg" alt="Scan Fingerprint" id="scanBtn" class="fingerprint">
+            <span class="scan-text">Click to scan fingerprint</span>
+          </div>
+          <span class="error-message" id="fingerprintError"></span>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn" id="submitBtn" disabled>Register Student</button>
+        </div>
+      </form>
+
+      <div id="regConfirmation" class="confirmation hidden">
+        <h3>Registration Successful!</h3>
+        <p>Student has been successfully registered in the database.</p>
+        <button type="button" class="btn" id="newRegistration">Register Another Student</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioAttend System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <!-- Auth Screens -->
+  <div id="authWrapper">
+    <div class="auth-card">
+      <!-- Register -->
+      <div id="registerScreen">
+        <h2>Register Admin</h2>
+        <form id="registerForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input id="regName" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input id="regEmail" type="email" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input id="regPassword" type="password" required />
+          </div>
+          <button class="btn primary w-100">Register</button>
+        </form>
+        <p class="swap-auth muted">Already have an account?
+          <a href="#" id="showLogin">Login</a>
+        </p>
+      </div>
+
+      <!-- Login -->
+      <div id="loginScreen" class="hidden">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input id="loginEmail" type="email" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input id="loginPassword" type="password" required />
+          </div>
+          <button class="btn primary w-100">Login</button>
+        </form>
+        <p class="swap-auth muted">No account?
+          <a href="#" id="showRegister">Register</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Layout -->
+  <div id="app" class="hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-content">
+        <!-- Main content area -->
+        <div class="sidebar-main">
+          <div class="logo">
+            <div class="logo-images">
+              <img src="Adobe Express - file.png" alt="JHCSC Logo" class="logo-img">
+              <img src="scc orig.png" alt="SSC Logo" class="logo-img">
+            </div>
+            <h3>J.H Cerilles State<br>College Biometric<br>Attendance</h3>
+          </div>
+
+          <nav class="nav">
+            <button class="nav-item active" data-section="dashboard">
+              <i class="fas fa-chart-pie"></i> Dashboard
+            </button>
+            <button class="nav-item" data-section="events">
+              <i class="fas fa-calendar-alt"></i> Events
+            </button>
+            <button class="nav-item" data-section="students">
+              <i class="fas fa-user-graduate"></i> Students
+            </button>
+            <button class="nav-item" data-section="attendance">
+              <i class="fas fa-check-circle"></i> Attendance
+            </button>
+            <button class="nav-item" data-section="reports">
+              <i class="fas fa-file-alt"></i> Reports
+            </button>
+            <button class="nav-item" data-section="settings">
+              <i class="fas fa-cog"></i> Settings
+            </button>
+          </nav>
+        </div>
+
+        <!-- Footer section - FIXED POSITION -->
+        <div class="sidebar-footer">
+          <div class="user-mini">
+            <div class="avatar" id="avatarInitials">AD</div>
+            <div class="user-info">
+              <div id="adminNameMini">Administrator</div>
+              <small id="adminEmailMini">admin@jhcerilles.edu.ph</small>
+            </div>
+          </div>
+          <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <button class="btn" id="menuToggle" style="display: none;">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 id="sectionTitle">Dashboard</h2>
+        <div class="profile-chip">
+          <div class="avatar" id="avatarInitialsTop">AD</div>
+          <div class="stack">
+            <strong id="adminNameTop">Admin</strong>
+            <small id="adminRoleTop">Super Admin</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="section active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="label">
+              <span>Total Students</span>
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="value" id="totalStudents">0</div>
+            <div class="trend">+5% from last week</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">
+              <span>Upcoming Events</span>
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="value" id="upcomingEvents">0</div>
+            <div class="trend">2 events this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">
+              <span>Today's Attendance</span>
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="value" id="todayAttendance">0</div>
+            <div class="trend">87% participation rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">
+              <span>System Status</span>
+              <i class="fas fa-server"></i>
+            </div>
+            <div class="value">Online</div>
+            <div class="trend">
+              <span class="badge success">All systems operational</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="header">
+            <h3>Attendance Overview</h3>
+            <div class="filters">
+              <div class="filter-group">
+                <label>Time Range</label>
+                <select id="chartRange">
+                  <option value="7">Last 7 Days</option>
+                  <option value="30" selected>Last 30 Days</option>
+                  <option value="90">Last 90 Days</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="attendanceChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="header">
+            <h3>Recent Attendance</h3>
+            <button class="btn primary" id="viewAllAttendance">
+              <i class="fas fa-eye"></i> View All
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table id="recentAttendanceTable">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Event</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Events Section -->
+      <section id="events" class="section">
+        <div class="card">
+          <div class="header">
+            <h3>Events Management</h3>
+            <button class="btn primary" id="addEventBtn">
+              <i class="fas fa-plus"></i> New Event
+            </button>
+          </div>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="eventSearch" placeholder="Search events..." />
+          </div>
+          <div class="table-wrap">
+            <table id="eventsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Time In</th>
+                  <th>Time Out</th>
+                  <th>Venue</th>
+                  <th>Status</th>
+                  <th>Attendance Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Students Section -->
+      <section id="students" class="section">
+        <div class="card">
+          <div class="header">
+            <h3>Student Management</h3>
+            <button class="btn primary" id="addStudentBtn" onclick="window.location.href='student_registration/stud.html'">
+              Add Student
+            </button>
+          </div>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="studentSearch" placeholder="Search students..." />
+          </div>
+          <div class="table-wrap">
+            <table id="studentsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Program</th>
+                  <th>Year</th>
+                  <th>Email</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attendance Section -->
+      <section id="attendance" class="section">
+        <div class="card">
+          <div class="header">
+            <h3>Attendance Records</h3>
+          </div>
+          <div class="filters">
+            <div class="filter-group">
+              <label>Event</label>
+              <select id="eventFilter">
+                <option value="">All Events</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Date</label>
+              <input type="date" id="dateFilter" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="attendanceTable">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Date & Time</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reports Section -->
+      <section id="reports" class="section">
+        <div class="card">
+          <div class="header">
+            <h3>Generate Reports</h3>
+            <button class="btn primary" id="generateReportBtn">
+              <i class="fas fa-download"></i> Export Report
+            </button>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Report Type</label>
+              <select id="reportType">
+                <option value="attendance">Attendance Report</option>
+                <option value="events">Events Report</option>
+                <option value="students">Student Report</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>From Date</label>
+              <input type="date" id="reportFrom" />
+            </div>
+            <div class="form-group">
+              <label>To Date</label>
+              <input type="date" id="reportTo" />
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="reportsTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Event</th>
+                  <th>Participants</th>
+                  <th>Attendance Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section id="settings" class="section">
+        <div class="card">
+          <div class="header">
+            <h3>System Settings</h3>
+          </div>
+          <form id="settingsForm">
+            <div class="form-group">
+              <label>System Name</label>
+              <input id="sysName" />
+            </div>
+            <div class="form-group">
+              <label>Timezone</label>
+              <select id="sysTZ">
+                <option value="Asia/Manila">Philippine Time (PHT)</option>
+                <option value="America/New_York">Eastern Time (ET)</option>
+                <option value="Europe/London">Greenwich Mean Time (GMT)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Email Notifications</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <label class="switch">
+                  <input type="checkbox" id="sysEmailNotif" checked>
+                  <span class="slider"></span>
+                </label>
+                <span id="emailNotifStatus">Enabled</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Auto Refresh Data</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <label class="switch">
+                  <input type="checkbox" id="sysAutoRefresh">
+                  <span class="slider"></span>
+                </label>
+                <span id="autoRefreshStatus">Disabled</span>
+              </div>
+            </div>
+            <button type="submit" class="btn primary">Save Settings</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="header">
+            <h3>System Information</h3>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Version</label>
+              <input value="BioAttend v2.1.0" disabled />
+            </div>
+            <div class="form-group">
+              <label>Last Update</label>
+              <input value="June 15, 2023" disabled />
+            </div>
+            <div class="form-group">
+              <label>Database Size</label>
+              <input value="4.2 MB" disabled />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Event Modal Form -->
+  <div id="eventModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="eventModalTitle">Add New Event</h3>
+        <button class="icon-btn" id="closeEventModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="eventForm">
+        <input type="hidden" id="eventId" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Event Name</label>
+            <input id="eventName" required />
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input id="eventDate" type="date" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Time</label>
+            <input id="eventStart" type="time" required />
+          </div>
+          <div class="form-group">
+            <label>End Time</label>
+            <input id="eventEnd" type="time" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Venue</label>
+            <input id="eventVenue" required />  
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="eventStatus">
+              <option value="upcoming">Upcoming</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Attendance Type</label>
+            <select id="eventAttendanceType" required>
+              <option value="both">Time In and Time Out</option>
+              <option value="in_only">Time In Only</option>
+            </select>
+            <small style="color: #718096; display: block; margin-top: 5px;">
+              <i class="fas fa-info-circle"></i> Choose whether students need to time in only, or both time in and time out
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="eventDesc" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn primary w-100">Save Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Student Modal -->
+  <div id="studentModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="studentModalTitle">Add New Student</h3>
+        <button class="icon-btn" id="closeStudentModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="studentForm">
+        <input type="hidden" id="studentId" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Student ID</label>
+            <input id="studentIdInput" required />
+          </div>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input id="studentName" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Program</label>
+            <select id="studentProgram" required>
+              <option value="">Select Program</option>
+              <option value="BSIT">BS Information Technology</option>
+              <option value="BSCS">BS Computer Science</option>
+              <option value="BSED">BS Education</option>
+              <option value="BSBA">BS Business Administration</option>
+              <option value="BSTM">BS Tourism Management</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Year Level</label>
+            <select id="studentYear" required>
+              <option value="">Select Year</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input id="studentContact" type="tel" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn primary w-100">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="notification hidden">
+    <i class="fas fa-check-circle"></i>
+    <span id="notificationText"></span>
+  </div>
+
+    <!-- Student Attendance Modal -->
+  <div id="attendanceModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('attendanceModal')">&times;</span>
+      <h2>Student Attendance</h2>
+
+      <table id="studentAttendanceTable" class="table">
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Course/Year Level</th>
+            <th>Date & Time</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+      <div class="modal-footer">
+        <button id="exportBtn" class="btn btn-success">Export Attendance</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Test Modal - ADD THIS SECTION -->
+  <div id="emailTestModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Test Email Configuration</h3>
+        <button class="icon-btn" onclick="closeModal('emailTestModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Test Email Address</label>
+          <input type="email" id="testEmailAddress" placeholder="Enter email to test" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <div id="emailConfigStatus" style="padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            Checking configuration...
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="closeModal('emailTestModal')">Cancel</button>
+        <button class="btn primary" onclick="sendTestEmail()">Send Test Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notification" class="notification hidden">
+    <i class="fas fa-check-circle"></i>
+    <span id="notificationText"></span>
+  </div>
+
+  <!-- SCRIPTS GO HERE - RIGHT BEFORE CLOSING BODY TAG -->
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+<script>
+// Gmail Configuration - Updated with correct redirect URIs
+const GMAIL_CONFIG = {
+    "web": {
+        "client_id": "42080845872-ncna7fgiuo9gr7khvuot8lth6vlvda6v.apps.googleusercontent.com",
+        "project_id": "bioattend-477514",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost",
+            "http://localhost:8080",
+            "http://localhost/bioattend",
+            "http://localhost/bioattend/admin.html",
+            "http://127.0.0.1",
+            "http://127.0.0.1:8080",
+            "http://127.0.0.1/bioattend"
+        ],
+        "javascript_origins": [
+            "http://localhost",
+            "http://localhost:8080", 
+            "http://127.0.0.1",
+            "http://127.0.0.1:8080"
+        ]
+    }
+};
+</script>
+<script src="admin.js"></script>
+</body>
+</html>
+
+

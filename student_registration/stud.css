@@ -1,0 +1,222 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: url("red.jpg") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.registration-container {
+  padding: 25px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 120px;
+  height: auto;
+  margin: 0 10px;
+}
+
+h2 {
+  text-align: center;
+  color: #1a2a6c;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+h3 {
+  text-align: center;
+  color: #084b02;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+/* === LANDSCAPE GRID LAYOUT === */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+  align-items: start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+}
+
+label {
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  height: 42px;
+}
+
+input:focus, select:focus {
+  border-color: #1a2a6c;
+  outline: none;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 3px;
+  min-height: 16px;
+}
+
+/* === FINGERPRINT SECTION === */
+.fingerprint-group {
+  grid-column: span 2;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.fingerprint-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.fingerprint-container:hover {
+  transform: scale(1.05);
+}
+
+.fingerprint {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.fingerprint.scanned {
+  box-shadow: 0 0 18px rgba(46, 204, 113, 0.8);
+  border: 2px solid #2ecc71;
+}
+
+.scan-text {
+  display: block;
+  margin-top: 5px;
+  font-weight: 600;
+  color: #1a2a6c;
+  font-size: 15px;
+}
+
+/* === BUTTON === */
+.form-actions {
+  grid-column: span 2;
+  margin-top: 8px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #1a2a6c, #b21f1f);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #243b7a, #c52c2c);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* === CONFIRMATION === */
+.confirmation {
+  text-align: center;
+  padding: 18px;
+  background: rgba(46, 204, 113, 0.2);
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.confirmation h3 {
+  color: #2ecc71;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.confirmation p {
+  font-size: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+.success-animation {
+  animation: successPulse 2s infinite;
+}
+
+@keyframes successPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .registration-container {
+    padding: 20px;
+  }
+  
+  h3 {
+    font-size: 18px;
+  }
+  
+  h2 {
+    font-size: 20px;
+  }
+}
